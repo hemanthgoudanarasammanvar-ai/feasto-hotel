@@ -1,0 +1,192 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HOTEL FESTO | Restaurant</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="navbar">
+  <a href="#" class="logo">🍽️ HOTEL FESTO</a>
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#menu">Menu</a>
+    <a href="#waiters">Our Team</a>
+    <a href="#reviews">Reviews</a>
+  </nav>
+  <button class="admin-btn" onclick="showAdmin()">Admin Login</button>
+</header>
+
+<section class="hero" id="home">
+  <div class="hero-content">
+    <p class="eyebrow">WELCOME TO THE HOTEL FESTO </p>
+    <h1>Experience the Art<br>of Fine Dining</h1>
+    <p>Authentic flavours, unforgettable moments.</p>
+    <a href="#menu" class="primary-btn">Explore Our Menu</a>
+  </div>
+</section>
+
+<section class="section" id="menu">
+  <div class="section-heading">
+    <p class="eyebrow">OUR SPECIALITIES</p>
+    <h2>Explore Our Menu</h2>
+    <p>Discover delicious dishes made with love.</p>
+  </div>
+  <div class="filters" id="filters">
+    <button class="filter active" onclick="filterMenu('All', this)">All</button>
+    <button class="filter" onclick="filterMenu('Starters', this)">Starters</button>
+    <button class="filter" onclick="filterMenu('Main Course', this)">Main Course</button>
+    <button class="filter" onclick="filterMenu('Desserts', this)">Desserts</button>
+    <button class="filter" onclick="filterMenu('Drinks', this)">Drinks</button>
+  </div>
+  <div class="menu-grid" id="menuGrid"></div>
+</section>
+
+<section class="cart-section section">
+  <div class="section-heading">
+    <p class="eyebrow">YOUR SELECTION</p>
+    <h2>Your Cart</h2>
+  </div>
+  <div id="cartItems"></div>
+  <div class="cart-total">
+    <h3>Total: ₹<span id="cartTotal">0</span></h3>
+    <button class="primary-btn" onclick="placeOrder()">Place Order</button>
+  </div>
+  <p id="orderMessage" class="message"></p>
+</section>
+
+<section class="section team-section" id="waiters">
+  <div class="section-heading">
+    <p class="eyebrow">OUR TEAM</p>
+    <h2>Meet Our Waiters</h2>
+    <p>Our team is here to make your dining experience special.</p>
+  </div>
+  <div class="waiter-grid" id="waiterGrid"></div>
+</section>
+
+<section class="section reviews-section" id="reviews">
+  <div class="section-heading">
+    <p class="eyebrow">GUEST EXPERIENCES</p>
+    <h2>Customer Reviews</h2>
+  </div>
+  <div id="reviewsList" class="reviews-grid"></div>
+  <div class="review-form">
+    <h3>Share Your Experience</h3>
+    <input type="text" id="reviewName" placeholder="Your name">
+    <select id="reviewRating">
+      <option value="5">★★★★★ - Excellent</option>
+      <option value="4">★★★★☆ - Very good</option>
+      <option value="3">★★★☆☆ - Good</option>
+      <option value="2">★★☆☆☆ - Fair</option>
+      <option value="1">★☆☆☆☆ - Poor</option>
+    </select>
+    <textarea id="reviewText" placeholder="Write your review"></textarea>
+    <button class="primary-btn" onclick="submitReview()">Submit Review</button>
+  </div>
+</section>
+
+<footer>
+  <h2>HOTEL FESTO</h2>
+  <p>Fine dining. Great memories.</p>
+  <p>Open daily: 11:00 AM – 10:30 PM</p>
+  <p>© 2026 HOTEL FESTO. Sample restaurant website.</p>
+</footer>
+
+<!-- Admin Dashboard -->
+<div class="admin-overlay" id="adminOverlay">
+  <div class="admin-panel">
+    <button class="close-btn" onclick="closeAdmin()">✕</button>
+    <div id="loginSection">
+      <h2>Admin Login</h2>
+      <p>Sign in to manage the restaurant.</p>
+      <input type="text" id="adminUser" placeholder="Username">
+      <input type="password" id="adminPass" placeholder="Password">
+      <button class="primary-btn" onclick="adminLogin()">Login</button>
+      <p id="loginError" class="error"></p>
+      <small>Demo login: admin / feast123</small>
+    </div>
+
+    <div id="dashboard" class="hidden">
+      <div class="dashboard-header">
+        <div>
+          <p class="eyebrow">MANAGEMENT PANEL</p>
+          <h2>Admin Dashboard</h2>
+        </div>
+        <button class="secondary-btn" onclick="adminLogout()">Logout</button>
+      </div>
+
+      <div class="admin-tabs">
+        <button class="tab active" onclick="showTab('overview', this)">Overview</button>
+        <button class="tab" onclick="showTab('manageMenu', this)">Menu</button>
+        <button class="tab" onclick="showTab('manageWaiters', this)">Waiters</button>
+        <button class="tab" onclick="showTab('manageOrders', this)">Orders</button>
+        <button class="tab" onclick="showTab('manageReviews', this)">Reviews</button>
+      </div>
+
+      <div id="overview" class="tab-content">
+        <h3>Restaurant Overview</h3>
+        <div class="stats-grid">
+          <div class="stat-card"><span>Total Orders</span><strong id="statOrders">0</strong></div>
+          <div class="stat-card"><span>Total Revenue</span><strong id="statRevenue">₹0</strong></div>
+          <div class="stat-card"><span>Menu Items</span><strong id="statMenu">0</strong></div>
+          <div class="stat-card"><span>Reviews</span><strong id="statReviews">0</strong></div>
+        </div>
+        <h3>Recent Orders</h3>
+        <div id="recentOrders"></div>
+      </div>
+
+      <div id="manageMenu" class="tab-content hidden">
+        <h3>Manage Menu</h3>
+        <div class="admin-form">
+          <input id="newDish" placeholder="Dish name">
+          <input id="newPrice" type="number" placeholder="Price in ₹" min="1">
+          <select id="newCategory">
+            <option>Starters</option>
+            <option>Main Course</option>
+            <option>Desserts</option>
+            <option>Drinks</option>
+          </select>
+          <input id="newImage" placeholder="Image URL (optional)">
+          <button class="primary-btn" onclick="addDish()">Add Dish</button>
+        </div>
+        <div id="adminMenuList"></div>
+      </div>
+
+      <div id="manageWaiters" class="tab-content hidden">
+        <h3>Manage Waiters</h3>
+        <div class="admin-form">
+          <input id="newWaiter" placeholder="Waiter name">
+          <input id="newWaiterId" placeholder="Waiter ID">
+          <input id="newTable" placeholder="Assigned table">
+          <select id="newStatus">
+            <option>Available</option>
+            <option>Busy</option>
+            <option>Off Duty</option>
+          </select>
+          <button class="primary-btn" onclick="addWaiter()">Add Waiter</button>
+        </div>
+        <div id="adminWaiterList"></div>
+      </div>
+
+      <div id="manageOrders" class="tab-content hidden">
+        <h3>All Orders</h3>
+        <div id="allOrders"></div>
+      </div>
+
+      <div id="manageReviews" class="tab-content hidden">
+        <h3>Customer Reviews</h3>
+        <div id="adminReviews"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="script.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
